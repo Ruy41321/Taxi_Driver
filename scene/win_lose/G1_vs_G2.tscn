@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfpsbrdqxu0gd"]
+
+[ext_resource type="Shader" uid="uid://6qfs88nsdoor" path="res://scene/win_lose/shader/win_lose_effect.gdshader" id="1_kmwfl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ygwye"]
+shader = ExtResource("1_kmwfl")
+shader_parameter/tint_color = Color(0.34902, 0.682353, 0.360784, 0.313726)
+shader_parameter/tint_strength = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yn6r3"]
+shader = ExtResource("1_kmwfl")
+shader_parameter/tint_color = Color(0.776471, 0.188235, 0.12549, 0.313726)
+shader_parameter/tint_strength = 1.0
+
+[node name="G1vsG2" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerBg" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ygwye")
+layout_mode = 0
+offset_left = -46.0
+offset_top = -8.0
+offset_right = 607.0
+offset_bottom = 682.0
+
+[node name="TaxiBg" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_yn6r3")
+layout_mode = 0
+offset_left = 607.0
+offset_top = -5.0
+offset_right = 1220.0
+offset_bottom = 668.0
+
+[node name="PlayerLabel" type="Label" parent="."]
+z_index = 4
+layout_mode = 0
+offset_left = 180.0
+offset_top = 82.0
+offset_right = 499.0
+offset_bottom = 151.0
+theme_override_font_sizes/font_size = 50
+text = "Player
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="TaxiLabel" type="Label" parent="."]
+z_index = 4
+layout_mode = 0
+offset_left = 676.0
+offset_top = 86.0
+offset_right = 995.0
+offset_bottom = 155.0
+theme_override_font_sizes/font_size = 50
+text = "TAXI"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true

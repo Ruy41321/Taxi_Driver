@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnuh1aav6pnso"]
+
+[ext_resource type="Shader" uid="uid://6qfs88nsdoor" path="res://scene/win_lose/shader/win_lose_effect.gdshader" id="1_2vm1u"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ygwye"]
+shader = ExtResource("1_2vm1u")
+shader_parameter/tint_color = Color(0.34902, 0.682353, 0.360784, 0.313726)
+shader_parameter/tint_strength = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yn6r3"]
+shader = ExtResource("1_2vm1u")
+shader_parameter/tint_color = Color(0.776471, 0.188235, 0.12549, 0.313726)
+shader_parameter/tint_strength = 1.0
+
+[node name="G1" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WinBg" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_ygwye")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LoseBg" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_yn6r3")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Status" type="Label" parent="."]
+z_index = 4
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -143.0
+offset_right = 144.0
+offset_bottom = -408.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "Game Over"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true

@@ -1,0 +1,80 @@
+[gd_scene load_steps=5 format=3 uid="uid://80usgcnvca7g"]
+
+[ext_resource type="Texture2D" uid="uid://c8grsfe58dnp1" path="res://assets/City Asset Pack 16x16/CharacterParts.png" id="1_oivnn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3mo3o"]
+radius = 6.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vbpd3"]
+size = Vector2(8, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kklmi"]
+size = Vector2(8, 4)
+
+[node name="bodyPart" type="Node2D"]
+
+[node name="Head" type="RigidBody2D" parent="."]
+collision_layer = 4
+collision_mask = 7
+mass = 0.4
+gravity_scale = 0.0
+center_of_mass_mode = 1
+contact_monitor = true
+max_contacts_reported = 1
+metadata/Name = "bodyPart"
+
+[node name="Head" type="Sprite2D" parent="Head"]
+visible = false
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_oivnn")
+flip_h = true
+hframes = 31
+vframes = 12
+frame = 31
+
+[node name="HeadShape" type="CollisionShape2D" parent="Head"]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_3mo3o")
+disabled = true
+
+[node name="Body" type="RigidBody2D" parent="."]
+collision_layer = 4
+collision_mask = 7
+mass = 0.6
+gravity_scale = 0.0
+metadata/Name = "bodyPart"
+
+[node name="Body" type="Sprite2D" parent="Body"]
+visible = false
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_oivnn")
+flip_h = true
+hframes = 31
+vframes = 12
+frame = 37
+
+[node name="BodyShape" type="CollisionShape2D" parent="Body"]
+position = Vector2(0, 7)
+shape = SubResource("RectangleShape2D_vbpd3")
+disabled = true
+
+[node name="Foot" type="RigidBody2D" parent="."]
+collision_layer = 4
+collision_mask = 7
+mass = 0.2
+gravity_scale = 0.0
+metadata/Name = "bodyPart"
+
+[node name="Foot" type="Sprite2D" parent="Foot"]
+visible = false
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_oivnn")
+flip_h = true
+hframes = 31
+vframes = 12
+frame = 43
+
+[node name="FootShape" type="CollisionShape2D" parent="Foot"]
+position = Vector2(0, 13)
+shape = SubResource("RectangleShape2D_kklmi")
+disabled = true

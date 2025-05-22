@@ -1,0 +1,108 @@
+[gd_scene load_steps=5 format=3 uid="uid://cq4shde0jj8gl"]
+
+[ext_resource type="Script" uid="uid://chv7e6kru501l" path="res://scene/start_menu/script/start_menu.gd" id="1_blb2q"]
+[ext_resource type="Shader" uid="uid://da6pkrche1f6i" path="res://scene/start_menu/shader/Interface.gdshader" id="1_q8vp5"]
+[ext_resource type="AudioStream" uid="uid://vchv6gm5mi4" path="res://assets/audio/menu_soundtrack.mp3" id="3_3qp15"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dxhhc"]
+shader = ExtResource("1_q8vp5")
+shader_parameter/dimensions = Vector2(1024, 600)
+shader_parameter/background_color = Color(0.0588235, 0.0901961, 0.0980392, 1)
+shader_parameter/small_stars = 50.0
+shader_parameter/small_stars_far_size = 0.5
+shader_parameter/small_stars_near_size = 1.0
+shader_parameter/large_stars = 8.0
+shader_parameter/large_stars_far_size = 0.5
+shader_parameter/large_stars_near_size = 1.0
+shader_parameter/far_stars_color = Color(0.5, 0, 1, 1)
+shader_parameter/near_stars_color = Color(1, 1, 1, 1)
+shader_parameter/base_scroll_speed = 0.05
+shader_parameter/additional_scroll_speed = 0.05
+
+[node name="Interface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_dxhhc")
+layout_mode = 0
+offset_right = 1159.0
+offset_bottom = 657.0
+
+[node name="StartMenu" type="MarginContainer" parent="."]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -102.0
+offset_right = -22.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+script = ExtResource("1_blb2q")
+
+[node name="MainMenu" type="VBoxContainer" parent="StartMenu"]
+layout_mode = 2
+alignment = 1
+
+[node name="Play" type="Button" parent="StartMenu/MainMenu"]
+layout_mode = 2
+text = "Play"
+
+[node name="Quit" type="Button" parent="StartMenu/MainMenu"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Quit"
+
+[node name="PlayMenu" type="VBoxContainer" parent="StartMenu"]
+visible = false
+layout_mode = 2
+
+[node name="Level1" type="Button" parent="StartMenu/PlayMenu"]
+layout_mode = 2
+text = "2 Player"
+
+[node name="Level2" type="Button" parent="StartMenu/PlayMenu"]
+layout_mode = 2
+text = "1 Player"
+
+[node name="Back" type="Button" parent="StartMenu/PlayMenu"]
+layout_mode = 2
+text = "Back"
+
+[node name="MultiplayerSelection" type="VBoxContainer" parent="StartMenu"]
+visible = false
+layout_mode = 2
+
+[node name="Host" type="Button" parent="StartMenu/MultiplayerSelection"]
+layout_mode = 2
+text = "Host"
+
+[node name="Join" type="Button" parent="StartMenu/MultiplayerSelection"]
+layout_mode = 2
+text = "Join"
+
+[node name="Back" type="Button" parent="StartMenu/MultiplayerSelection"]
+layout_mode = 2
+text = "Back"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_3qp15")
+volume_db = -34.166
+autoplay = true
+
+[connection signal="pressed" from="StartMenu/MainMenu/Play" to="StartMenu" method="_on_play_pressed"]
+[connection signal="pressed" from="StartMenu/MainMenu/Quit" to="StartMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="StartMenu/PlayMenu/Level1" to="StartMenu" method="_on_level_1_pressed"]
+[connection signal="pressed" from="StartMenu/PlayMenu/Level2" to="StartMenu" method="_on_level_2_pressed"]
+[connection signal="pressed" from="StartMenu/PlayMenu/Back" to="StartMenu" method="_on_back_pressed"]
+[connection signal="pressed" from="StartMenu/MultiplayerSelection/Back" to="StartMenu" method="_on_back_pressed"]
