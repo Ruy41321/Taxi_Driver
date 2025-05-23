@@ -6,13 +6,25 @@ var push_force = 80
 var direction = Vector2()
 var time = 0
 
+var taxi
+var playtime
+
+
+@export var player_id := 1:
+	set(id):
+		player_id = id
+
+func _ready() -> void:
+	taxi = get_parent().get_parent().get_node("Taxi")
+	playtime = get_parent().get_parent().get_node("PlayTime")
+
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("Interact"):
 		for i in $ShapeCast.get_collision_count():
 			var c  = $ShapeCast.get_collider(i)
 			if c is CharacterBody2D && c.get_meta("Name") == "Taxi": 
 				jumpOnTaxi()
-	if time == int(ceil($"../PlayTime".time_left)):
+	if time == int(ceil(playtime.time_left)):
 		$"..".handle_win("player")
 
 func _physics_process(_delta: float) -> void:
@@ -28,10 +40,10 @@ func _physics_process(_delta: float) -> void:
 	
 func jumpOnTaxi():
 	$CarJoin.play()
-	$"../Taxi".finished = 0
+	taxi.finished = 0
 	visible = 0	
 	$CollisionShape2D.disabled = 1
-	time = int(ceil($"../PlayTime".time_left)) - 1
+	time = int(ceil(playtime.time_left)) - 1
 	
 func get_direction():
 	direction.x = Input.get_axis("ui2_left", "ui2_right")	
