@@ -6,7 +6,8 @@ func _process(_delta: float) -> void:
 			return
 		if !visible:
 			visible = 1
-			get_tree().paused = 1
+			if not (get_tree().get_current_scene().name == "Level1"):
+				get_tree().paused = 1
 		else:
 			visible = 0
 			get_tree().paused = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://du4clywhudfvr"]
+[gd_scene load_steps=42 format=3 uid="uid://du4clywhudfvr"]
 
 [ext_resource type="Script" uid="uid://bbc8bsq3rgic5" path="res://scene/Taxi/taxi.gd" id="1_e1mvl"]
 [ext_resource type="Texture2D" uid="uid://jorhtij7oio8" path="res://assets/taxi/Sayan.png" id="2_f2ymw"]
@@ -211,6 +211,11 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ir0i4"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_e1mvl"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="Taxi" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 7
@@ -282,5 +287,8 @@ collision_mask = 3
 [node name="Kill" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_hk7og")
 volume_db = -32.54
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_e1mvl")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

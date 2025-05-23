@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=4 uid="uid://rp8737qk4r7i"]
+[gd_scene load_steps=59 format=4 uid="uid://rp8737qk4r7i"]
 
 [ext_resource type="Script" uid="uid://bg5kkhihjshbx" path="res://scene/level1/script/game.gd" id="1_i6wa8"]
 [ext_resource type="PackedScene" uid="uid://dfpsbrdqxu0gd" path="res://scene/win_lose/G1_vs_G2.tscn" id="2_6whbs"]
@@ -16,7 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://dvbjmk1w56gtx" path="res://assets/spaghetti_tiles/Obstacles1.png" id="14_nwyi6"]
 [ext_resource type="Texture2D" uid="uid://cafi7q4db1kyr" path="res://assets/spaghetti_tiles/Obstacles3.png" id="15_jn2bh"]
 [ext_resource type="Texture2D" uid="uid://bh4em8hmb5jf3" path="res://assets/spaghetti_tiles/Obstacles2.png" id="16_dl1ee"]
-[ext_resource type="PackedScene" uid="uid://du4clywhudfvr" path="res://scene/Taxi/Taxi.tscn" id="22_g5exo"]
 [ext_resource type="Texture2D" uid="uid://bn73jptt2sshs" path="res://assets/my_tiles/explosion.png" id="22_iidwr"]
 [ext_resource type="Texture2D" uid="uid://c8grsfe58dnp1" path="res://assets/City Asset Pack 16x16/CharacterParts.png" id="31_422p2"]
 [ext_resource type="Script" uid="uid://dh5juch7q566r" path="res://scene/level1/script/npc.gd" id="32_ywvmp"]
@@ -5037,12 +5036,9 @@ shape = SubResource("CapsuleShape2D_ndfhq")
 stream = ExtResource("34_s4rcs")
 volume_db = -20.0
 
-[node name="Taxi" parent="." instance=ExtResource("22_g5exo")]
-position = Vector2(1072, 469)
-
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://cb3wdnd8b4mpa")
-spawn_path = NodePath("../Players")
+_spawnable_scenes = PackedStringArray("uid://du4clywhudfvr", "uid://cb3wdnd8b4mpa")
+spawn_path = NodePath("..")
 spawn_limit = 2
 
 [node name="Players" type="Node2D" parent="."]

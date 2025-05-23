@@ -19,6 +19,20 @@ var time = 0
 var is_accellerating = 0
 var finished = 0
 
+var level
+var player_id = 1
+
+var taxi_id := 1:
+	set(id):
+		taxi_id = id
+
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(int(str(player_id)))
+
+func _ready() -> void:
+	position = Vector2(1050, 470)
+
 func _process(_delta: float) -> void:
 	handle_brum_sound()
 	update_tachimetro(max(abs(old_direction.x), abs(old_direction.y)))
@@ -45,6 +59,9 @@ func is_invested():
 
 func _physics_process(_delta: float) -> void:
 	$"../TimeLeft".text = str(ceil($"../PlayTime".time_left))
+	if !is_multiplayer_authority():
+		return
+
 	var direction = get_direction()
 	apply_slowdown(direction)
 	velocity = direction * SPEED
@@ -65,9 +82,9 @@ func handle_brum_sound():
 		$BrumAudio.play()
 
 func player_invested():
-	var x = float($"../Player".position.x)
-	var y = float($"../Player".position.y)
-	get_parent().remove_child($"../Player")
+	var x = float(level.player_instance.position.x)
+	var y = float(level.player_instance.position.y)
+	get_parent().remove_child(level.player_instance)
 	var bodyPart = preload("res://scene/level1/sub_scene/body_part.tscn").instantiate()
 	bodyPart.position = Vector2(x, y)
 	get_parent().add_child(bodyPart)

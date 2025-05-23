@@ -6,17 +6,20 @@ var push_force = 80
 var direction = Vector2()
 var time = 0
 
-var taxi
+var level
 var playtime
-
 
 @export var player_id := 1:
 	set(id):
 		player_id = id
 
+func _enter_tree() -> void:
+	print(int(str(player_id)))
+	set_multiplayer_authority(int(str(player_id)))
+
 func _ready() -> void:
-	taxi = get_parent().get_parent().get_node("Taxi")
-	playtime = get_parent().get_parent().get_node("PlayTime")
+	playtime = get_parent().get_node("PlayTime")
+	position = Vector2(600, 330)
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("Interact"):
@@ -28,6 +31,8 @@ func _process(_delta: float) -> void:
 		$"..".handle_win("player")
 
 func _physics_process(_delta: float) -> void:
+	if !is_multiplayer_authority():
+		return
 	var is_running = false
 	get_direction()
 	is_running = Input.is_action_pressed("ui2_shift")
@@ -40,7 +45,7 @@ func _physics_process(_delta: float) -> void:
 	
 func jumpOnTaxi():
 	$CarJoin.play()
-	taxi.finished = 0
+	level.taxi_instance.finished = 0
 	visible = 0	
 	$CollisionShape2D.disabled = 1
 	time = int(ceil(playtime.time_left)) - 1
