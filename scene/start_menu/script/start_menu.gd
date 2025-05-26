@@ -28,15 +28,31 @@ func _on_level_1_pressed() -> void:
 func _on_level_2_pressed() -> void:
 	get_tree().change_scene_to_file("res://scene/level2/level2.tscn")
 
+var is_host : bool = false
+
 func _on_host_pressed() -> void:
 	MultiplayerManager.become_host()
-	$MultiplayerSelection.visible = 0
-
+	is_host = true
+	$MultiplayerSelection/Host.visible = 0
+	$MultiplayerSelection/Join.visible = 0
+	$MultiplayerSelection/IpAddress.visible = 0
+	$"../ConnectionStatusLabel".visible = 1
+	
 func _on_join_pressed() -> void:
-	MultiplayerManager.become_client()
+	if $MultiplayerSelection/IpAddress.text == "":
+		return
+	MultiplayerManager.become_client($MultiplayerSelection/IpAddress.text)
 	$MultiplayerSelection.visible = 0
 	
 
 func _on_back_pressed() -> void:
+	if is_host:
+		MultiplayerManager.delete_host()
+		is_host = false
 	$MainMenu.visible = 1
 	$PlayMenu.visible = 0
+	$MultiplayerSelection/Host.visible = 1
+	$MultiplayerSelection/Join.visible = 1
+	$MultiplayerSelection/IpAddress.visible = 1
+	$"../ConnectionStatusLabel".visible = 0
+	

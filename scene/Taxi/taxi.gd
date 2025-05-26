@@ -31,6 +31,7 @@ func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(player_id)))
 
 func _ready() -> void:
+	level = get_parent()
 	position = Vector2(1050, 470)
 
 func _process(_delta: float) -> void:
@@ -45,28 +46,28 @@ func _process(_delta: float) -> void:
 	if time == int(ceil($"../PlayTime".time_left)):
 		$"..".handle_win("taxi")
 		
+
 func is_invested():
-	if max(abs(old_direction.x), abs(old_direction.y)) > 10:
+	if max(abs(velocity.x), abs(velocity.y)) / SPEED > 10:
 		for i in $ShapeCast.get_collision_count():
 			var c  = $ShapeCast.get_collider(i)
 			if c is CharacterBody2D && c.get_meta("Name") == "Player" && !finished:
 				finished = 1
 				$Kill.play()
 				player_invested()
-				check_collision()
 				return 1
 	return 0
 
+
 func _physics_process(_delta: float) -> void:
 	$"../TimeLeft".text = str(ceil($"../PlayTime".time_left))
-	if !is_multiplayer_authority():
-		return
-
-	var direction = get_direction()
-	apply_slowdown(direction)
-	velocity = direction * SPEED
-	if (change_animation(direction)):
-		old_direction = Vector2()
+	if is_multiplayer_authority():
+		var direction = get_direction()
+		apply_slowdown(direction)
+		velocity = direction * SPEED
+		if (change_animation(direction)):
+			old_direction = Vector2()
+	if (velocity == Vector2()):
 		return
 	move_and_slide()
 	is_invested()
@@ -84,7 +85,12 @@ func handle_brum_sound():
 func player_invested():
 	var x = float(level.player_instance.position.x)
 	var y = float(level.player_instance.position.y)
-	get_parent().remove_child(level.player_instance)
+	#get_parent().remove_child(level.player_instance)
+	level.player_instance.visible = 0
+
+	level.player_instance.set_collision_layer_value(2, false)
+	level.player_instance.set_collision_mask_value(2, false)
+	level.player_instance.set_collision_mask_value(3, false)
 	var bodyPart = preload("res://scene/level1/sub_scene/body_part.tscn").instantiate()
 	bodyPart.position = Vector2(x, y)
 	get_parent().add_child(bodyPart)
@@ -161,10 +167,10 @@ func get_direction():
 func check_collision():	
 	for i in get_slide_collision_count():
 		var c  = get_slide_collision(i)
-		if c.get_collider() is RigidBody2D: 
+		if c.get_collider() is RigidBody2D:	
 			apply_collision(c)
 		else:
-			if max(abs(old_direction.x), abs(old_direction.y)) > 50:
+			if max(abs(velocity.x), abs(velocity.y)) / SPEED > 50:
 				is_invested()
 				broken = 1
 				update_tachimetro(0)
@@ -175,29 +181,29 @@ func check_collision():
 				$CrashAudio.play()
 				old_direction.x /= 2
 				old_direction.y /= 2
-			elif  max(abs(old_direction.x), abs(old_direction.y)) > 45:
+			elif  max(abs(velocity.x), abs(velocity.y)) / SPEED > 45:
 				old_direction.x /= 1.1
 				old_direction.y /= 1.1
 
 func apply_collision(c: KinematicCollision2D):
 	if c.get_collider().get_meta("Name") == "Birillo":
-		c.get_collider().apply_impulse(-c.get_normal() * (abs(old_direction.x) + abs(old_direction.y)))
+		c.get_collider().apply_impulse(-c.get_normal() * (abs(velocity.x) + abs(velocity.y)) / SPEED)
 		old_direction.x /= 2
 		old_direction.y /= 2
 	elif c.get_collider().get_meta("Name") == "Fuel":
-		if max(abs(old_direction.x), abs(old_direction.y)) > 25:
+		if max(abs(velocity.x), abs(velocity.y)) / SPEED > 25:
 			c.get_collider().call("explode")
 			old_direction.x /= 2
 			old_direction.y /= 2
 			broken = 1
 			$Timer.start()
-		elif  max(abs(old_direction.x), abs(old_direction.y)) > 20:
+		elif  max(abs(velocity.x), abs(velocity.y)) / SPEED > 20:
 				old_direction.x /= 1.1
 				old_direction.y /= 1.1
 	elif c.get_collider().get_meta("Name") == "Ball":
 		pass
 	elif c.get_collider().get_meta("Name") == "bodyPart":
-		c.get_collider().apply_impulse(-c.get_normal() * (abs(old_direction.x) + abs(old_direction.y)))
+		c.get_collider().apply_impulse(-c.get_normal() * (abs(velocity.x) + abs(velocity.y)) / SPEED)
 		old_direction.x /= 2
 		old_direction.y /= 2
 		
@@ -223,7 +229,10 @@ func can_change(dir):
 	curr_direction = dir
 	return 1
 
+@rpc("any_peer")
 func change_animation(direction):
+	if (multiplayer.get_unique_id() == 1):
+		change_animation.rpc(direction)
 	if direction.x > 0 && can_change("right"):
 		$ShapeCast.rotation_degrees = 270
 		$ShapeCast.position.y = 2
@@ -262,7 +271,10 @@ func change_animation(direction):
 
 var exploded = 0
 
+@rpc("any_peer")
 func _on_timer_timeout() -> void:
+	if (multiplayer.get_unique_id() == 1):
+		_on_timer_timeout.rpc()
 	if !exploded:
 		$BoomAnimation.play()
 		$ExplosionAudio.play()
@@ -271,7 +283,7 @@ func _on_timer_timeout() -> void:
 		$Timer.start()
 	else:
 		$"..".handle_win("player")
-		get_parent().remove_child(self) 
+		visible = 0
 
 func _on_play_time_timeout() -> void:
 		$"../TimeLeft".text = str(0)

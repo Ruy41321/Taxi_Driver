@@ -16,7 +16,10 @@ func _on_resume_pressed() -> void:
 	get_tree().paused = 0
 	visible = 0
 
+@rpc("any_peer")
 func _on_restart_pressed() -> void:
+	if (multiplayer.get_unique_id() == 1):
+		_on_restart_pressed.rpc()
 	if get_tree().paused == true:
 		get_tree().paused = 0
 	get_tree().reload_current_scene()

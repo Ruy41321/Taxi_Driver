@@ -51,6 +51,7 @@ scale = Vector2(3, 3)
 script = ExtResource("1_blb2q")
 
 [node name="MainMenu" type="VBoxContainer" parent="StartMenu"]
+visible = false
 layout_mode = 2
 alignment = 1
 
@@ -80,7 +81,6 @@ layout_mode = 2
 text = "Back"
 
 [node name="MultiplayerSelection" type="VBoxContainer" parent="StartMenu"]
-visible = false
 layout_mode = 2
 
 [node name="Host" type="Button" parent="StartMenu/MultiplayerSelection"]
@@ -91,9 +91,25 @@ text = "Host"
 layout_mode = 2
 text = "Join"
 
+[node name="IpAddress" type="LineEdit" parent="StartMenu/MultiplayerSelection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+placeholder_text = "IP to Join"
+
 [node name="Back" type="Button" parent="StartMenu/MultiplayerSelection"]
 layout_mode = 2
 text = "Back"
+
+[node name="ConnectionStatusLabel" type="Label" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 382.0
+offset_top = 102.0
+offset_right = 796.0
+offset_bottom = 151.0
+theme_override_font_sizes/font_size = 35
+text = "Your ip is 123.123.12.123"
+horizontal_alignment = 1
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_3qp15")

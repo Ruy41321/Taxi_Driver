@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=4 uid="uid://rp8737qk4r7i"]
+[gd_scene load_steps=60 format=4 uid="uid://rp8737qk4r7i"]
 
 [ext_resource type="Script" uid="uid://bg5kkhihjshbx" path="res://scene/level1/script/game.gd" id="1_i6wa8"]
 [ext_resource type="PackedScene" uid="uid://dfpsbrdqxu0gd" path="res://scene/win_lose/G1_vs_G2.tscn" id="2_6whbs"]
@@ -4614,9 +4614,15 @@ animations = [{
 "speed": 11.0
 }]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_0npse"]
+properties/0/path = NodePath(".:metadata/winner")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="Level1" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_i6wa8")
+metadata/winner = 0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(577, 324)
@@ -5041,4 +5047,5 @@ _spawnable_scenes = PackedStringArray("uid://du4clywhudfvr", "uid://cb3wdnd8b4mp
 spawn_path = NodePath("..")
 spawn_limit = 2
 
-[node name="Players" type="Node2D" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_0npse")

@@ -14,10 +14,10 @@ var playtime
 		player_id = id
 
 func _enter_tree() -> void:
-	print(int(str(player_id)))
-	set_multiplayer_authority(int(str(player_id)))
+	set_multiplayer_authority(int(str(name)))
 
 func _ready() -> void:
+	level = get_parent()
 	playtime = get_parent().get_node("PlayTime")
 	position = Vector2(600, 330)
 
