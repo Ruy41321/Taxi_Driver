@@ -83,22 +83,27 @@ text = "Back"
 [node name="MultiplayerSelection" type="VBoxContainer" parent="StartMenu"]
 layout_mode = 2
 
-[node name="Host" type="Button" parent="StartMenu/MultiplayerSelection"]
+[node name="NewPrivateRoom" type="Button" parent="StartMenu/MultiplayerSelection"]
 layout_mode = 2
-text = "Host"
+text = "Create Private Room"
 
-[node name="Join" type="Button" parent="StartMenu/MultiplayerSelection"]
+[node name="QuickJoin" type="Button" parent="StartMenu/MultiplayerSelection"]
 layout_mode = 2
-text = "Join"
+text = "Quick Join"
 
-[node name="IpAddress" type="LineEdit" parent="StartMenu/MultiplayerSelection"]
+[node name="RoomId" type="LineEdit" parent="StartMenu/MultiplayerSelection"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 8
-placeholder_text = "IP to Join"
+placeholder_text = "Insert Room Id"
 
 [node name="Back" type="Button" parent="StartMenu/MultiplayerSelection"]
 layout_mode = 2
 text = "Back"
+
+[node name="Server" type="Button" parent="StartMenu/MultiplayerSelection"]
+visible = false
+layout_mode = 2
+text = "start server"
 
 [node name="ConnectionStatusLabel" type="Label" parent="."]
 visible = false
@@ -121,4 +126,6 @@ autoplay = true
 [connection signal="pressed" from="StartMenu/PlayMenu/Level1" to="StartMenu" method="_on_level_1_pressed"]
 [connection signal="pressed" from="StartMenu/PlayMenu/Level2" to="StartMenu" method="_on_level_2_pressed"]
 [connection signal="pressed" from="StartMenu/PlayMenu/Back" to="StartMenu" method="_on_back_pressed"]
+[connection signal="text_changed" from="StartMenu/MultiplayerSelection/RoomId" to="StartMenu" method="_on_ip_address_text_changed"]
 [connection signal="pressed" from="StartMenu/MultiplayerSelection/Back" to="StartMenu" method="_on_back_pressed"]
+[connection signal="pressed" from="StartMenu/MultiplayerSelection/Server" to="StartMenu" method="_on_server_pressed"]

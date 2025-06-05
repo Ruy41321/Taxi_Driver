@@ -7,20 +7,21 @@ var player_scene = preload("res://scene/Player/Player.tscn")
 var player_instance = null
 var taxi_instance = null
 
-func add_player():
+
+func add_player(authority_id: int):
 	player_instance = player_scene.instantiate()
 
 	player_instance.level = self
-	player_instance.name = "Player_" + str(MultiplayerManager.player_id)
-	player_instance.player_id = MultiplayerManager.player_id
+	player_instance.name = "Player_" + str(authority_id)
+	player_instance.player_id = authority_id
 	player_instance.position = Vector2(600, 330)
 
 	add_child(player_instance, true)
 
-func add_taxi():
+func add_taxi(authority_id: int):
 	taxi_instance = taxi_scene.instantiate()
-	taxi_instance.name = "Taxi"
-	taxi_instance.player_id = 1
+	taxi_instance.name = "Taxi_" + str(authority_id)
+	taxi_instance.taxi_id = authority_id
 	taxi_instance.level = self
 	add_child(taxi_instance, true)
 
@@ -28,9 +29,23 @@ func _enter_tree() -> void:
 	set_multiplayer_authority(1)
 
 func _ready() -> void:
-	if (MultiplayerManager.is_host):
-		add_player()
-		add_taxi()
+	MultiplayerManager.level_node = self
+	var dict = {}
+	if (multiplayer.get_unique_id() == MultiplayerManager.player1_id):
+		dict = {
+			"command": "spawn_player",
+			"authority_id": multiplayer.get_unique_id()
+		}
+	elif (multiplayer.get_unique_id() == MultiplayerManager.player2_id):
+		dict = {
+			"command": "spawn_taxi",
+			"authority_id": multiplayer.get_unique_id()
+		}
+	else:
+		print("Error: Invalid player ID. Please check the multiplayer setup.")
+		return
+	MultiplayerManager.receive_message(dict)
+	MultiplayerManager.relay_message.rpc_id(1, MultiplayerManager.current_room_id, dict)
 
 func _process(_delta: float) -> void:
 	if player_instance == null || taxi_instance == null:

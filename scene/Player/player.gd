@@ -1,9 +1,10 @@
 extends CharacterBody2D
 
 
-const SPEED = 100.0
+const SPEED = 3000.0
 var push_force = 80
 var direction = Vector2()
+var is_running = false
 var time = 0
 
 var level
@@ -30,16 +31,27 @@ func _process(_delta: float) -> void:
 	if time == int(ceil(playtime.time_left)):
 		$"..".handle_win("player")
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority():
 		return
-	var is_running = false
-	get_direction()
 	is_running = Input.is_action_pressed("ui2_shift")
-	velocity = direction * SPEED
+	get_direction()
+	velocity = direction * SPEED * delta
 	if is_running:
 		velocity *= 2
-	change_animation(is_running)
+	move_and_check()
+	#print(str(multiplayer.get_unique_id()) + "before call: "+ str(name) + " moving with velocity: " + str(velocity))
+	MultiplayerManager.relay_message.rpc_id(1, MultiplayerManager.current_room_id, {
+		"command": "player_movement",
+		"direction": direction,
+		"velocity": velocity,
+		"is_running": is_running,
+		"position": position
+	})
+
+func move_and_check():
+	#print(str(multiplayer.get_unique_id()) + "after call: "+ str(name) + " moving with velocity: " + str(velocity))
+	change_animation()
 	move_and_slide()
 	check_collision()
 	
@@ -82,7 +94,7 @@ func flip(h, sprites):
 			sprites[i].flip_v = !sprites[i].flip_v
 			i += 1
 				
-func change_animation(is_running):
+func change_animation():
 	if direction.x > 0:
 		if $Head.flip_h:
 			flip(1, [$Head, $Body, $Foot, null])

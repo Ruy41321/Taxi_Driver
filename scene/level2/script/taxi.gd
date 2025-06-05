@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 10.0
+const SPEED = 300.0
 const UP = "up"
 const DOWN = "down"
 const LEFT = "left"
@@ -42,11 +42,11 @@ func _process(_delta: float) -> void:
 	if time == int(ceil($"../PlayTime".time_left)):
 		$"..".handle_win(true)
 		
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	$"../TimeLeft".text = str(ceil($"../PlayTime".time_left))
 	var direction = get_direction()
 	apply_slowdown(direction)
-	velocity = direction * SPEED
+	velocity = direction * SPEED * delta
 	if (change_animation(direction)):
 		old_direction = Vector2()
 		return

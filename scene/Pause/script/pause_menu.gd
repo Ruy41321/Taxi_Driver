@@ -27,7 +27,9 @@ func _on_restart_pressed() -> void:
 func _on_back_pressed() -> void:
 	get_tree().paused = 0
 	visible = 0
+	MultiplayerManager.quit_connection()
 	get_tree().change_scene_to_file("res://scene/start_menu/start_menu.tscn")
 
 func _on_quit_pressed() -> void:
+	MultiplayerManager.quit_connection()
 	get_tree().quit()
